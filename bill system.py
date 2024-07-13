@@ -1,9 +1,14 @@
 from datetime import datetime
 import random
+import numpy as np
+from colorama import Fore, Style, init
 
-print("S.MAHESHWARI BOOKS")
+# Initialize colorama
+init()
+
+print(Fore.LIGHTBLUE_EX + "S.MAHESHWARI BOOKS")
 print("------------------")
-print("Collection of books")
+print("Collection of books" + Style.RESET_ALL)
 
 # Define the Book class
 class Book:
@@ -15,7 +20,7 @@ class Book:
         self.discount = discount
 
     def display_info(self):
-        return f"Title: {self.title}\nAuthor: {self.author}\nYear: {self.year}\nPrice: Rs{self.price:.2f}\nDiscount: {self.discount*100}%"
+        return f"{Fore.RED}Title: {self.title}\nAuthor: {self.author}\nYear: {self.year}\nPrice: Rs{self.price:.2f}\nDiscount: {self.discount*100}%{Style.RESET_ALL}"
             
     def discounted_price(self):
         discount_amount = self.price * self.discount
@@ -30,7 +35,7 @@ class studyBooks:
         self.price = price
 
     def display_info(self):
-        return f"Title: {self.title}\nAuthor: {self.author}\nEdition: {self.edition}\nPrice: Rs{self.price:.2f}"
+        return f"{Fore.GREEN}Title: {self.title}\nAuthor: {self.author}\nEdition: {self.edition}\nPrice: Rs{self.price:.2f}{Style.RESET_ALL}"
 
 # Define the comics class
 class comics:
@@ -40,8 +45,8 @@ class comics:
         self.price = price
 
     def display_info(self):
-        return f"Title: {self.title}\nAuthor: {self.author}\nPrice: Rs{self.price:.2f}"
-    
+        return f"{Fore.MAGENTA}Title: {self.title}\nAuthor: {self.author}\nPrice: Rs{self.price:.2f}{Style.RESET_ALL}"
+
 # Create instances of the Book class
 book1 = Book("To Kill a Mockingbird", "Harper Lee", 1960, 12000, 0.10)
 book2 = Book("1984                 ", "George Orwell", 1949, 2400, 0.10)
@@ -66,17 +71,17 @@ codebooks = [codebook1, codebook2, codebook3, codebook4]
 comicsbooks = [comicsbook1, comicsbook2, comicsbook3, comicsbook4]
 
 # Display information for all books
-print("Books available:")
+print(Fore.CYAN + "Books available:" + Style.RESET_ALL)
 for i, book in enumerate(books, start=1):
     print(f"\nBook {i}:")
     print(book.display_info())
 
-print("\nStudy Books available:")
+print(Fore.CYAN + "\nStudy Books available:" + Style.RESET_ALL)
 for i, book in enumerate(codebooks, start=1):
     print(f"\nStudy Book {i}:")
     print(book.display_info())
-    
-print("\nComics Available:")
+
+print(Fore.CYAN + "\nComics Available:" + Style.RESET_ALL)
 for i, book in enumerate(comicsbooks, start=1):
     print(f"\nComic Book {i}:")
     print(book.display_info())
@@ -85,28 +90,28 @@ for i, book in enumerate(comicsbooks, start=1):
 def generate_receipt(selected_books):
     total_price = 0
     GST_RATE = 0.03
-    bill_number = random.randint(100, 999)
+    bill_number = np.random.randint(100, 999)
 
-    receipt = "\t\tS. MAHESHWARI BOOKS\n"
+    receipt = Fore.YELLOW + "\t\tS. MAHESHWARI BOOKS\n"
     receipt += "\t====================================\n"
-    receipt += "\t\t   BILL RECEIPT\n"
+    receipt += Style.BRIGHT+"\t\t   BILL RECEIPT\n"
     receipt += "\t------------------------------------\n"
-    receipt += f"\t\t\t\tBill No: {bill_number}\n"
+    receipt += Fore.YELLOW+Style.BRIGHT+f"\t\t\t\tBill No: {bill_number}\n"
     receipt += "\t------------------------------------\n"
     receipt += f"\tDate: {datetime.now().strftime('%Y-%m-%d')}\n"
     receipt += f"\tTime: {datetime.now().strftime('%H:%M:%S')}\n"
     receipt += "\t------------------------------------\n"
-    receipt += "\tItem:\t\t\tPrice:\n"
+    receipt += Style.BRIGHT+Fore.YELLOW+"\tItem:\t\t\tPrice:\n"
     receipt += "\t------------------------------------\n"
     
     for book in selected_books:
         if isinstance(book, Book):
             discounted_price = book.discounted_price()
             total_price += discounted_price
-            receipt += f"\t{book.title[:15]} \tRs{discounted_price:.2f}\n"
+            receipt +=Style.BRIGHT+Fore.YELLOW+f"\t{book.title[:15]} \tRs{discounted_price:.2f}\n"
         else:
             total_price += book.price
-            receipt += f"\t{book.title[:15]} \tRs{book.price:.2f}\n"
+            receipt +=Style.BRIGHT+Fore.YELLOW+f"\t{book.title[:15]} \tRs{book.price:.2f}\n"
     
     GST_amount = total_price * GST_RATE
     final_amount = total_price + GST_amount
@@ -121,7 +126,7 @@ def generate_receipt(selected_books):
     receipt += "\tAddress:\n"
     receipt += "\t192/A Northcar Street,Tenkasi-627811\n"
     receipt += "\t====================================\n"
-    receipt += "\t\tThank You for Shopping\n"
+    receipt += "\t\tThank You for Shopping\n" + Style.RESET_ALL
     
     return receipt
 
@@ -141,7 +146,7 @@ if 0 <= general_book_index < len(books):
         buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
         
         while buy_another == 'yes':
-            #Select another book
+            # Select another book
             another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
             if 0 <= another_book_index < len(books) and another_book_index != general_book_index:
                 selected_books.append(books[another_book_index])
@@ -168,7 +173,7 @@ if book_type == 'study':
             buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
             
             while buy_another == 'yes':
-                #Select another book
+                # Select another book
                 another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
                 if 0 <= another_book_index < len(codebooks):
                     selected_books.append(codebooks[another_book_index])
@@ -194,7 +199,7 @@ if book_type == 'comics':
             buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
             
             while buy_another == 'yes':
-                #Select another book
+                # Select another book
                 another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
                 if 0 <= another_book_index < len(comicsbooks):
                     selected_books.append(comicsbooks[another_book_index])
