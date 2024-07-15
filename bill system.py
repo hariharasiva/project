@@ -8,7 +8,7 @@ init()
 
 print(Fore.LIGHTBLUE_EX + "S.MAHESHWARI BOOKS")
 print("------------------")
-print("Collection of books" + Style.RESET_ALL)
+print("Collection of books and stationary items" + Style.RESET_ALL)
 
 # Define the Book class
 class Book:
@@ -26,8 +26,8 @@ class Book:
         discount_amount = self.price * self.discount
         return self.price - discount_amount
 
-# Define the studyBooks class
-class studyBooks:
+# Define the StudyBooks class
+class StudyBooks:
     def __init__(self, title, author, edition, price):
         self.title = title
         self.author = author
@@ -37,8 +37,8 @@ class studyBooks:
     def display_info(self):
         return f"{Fore.GREEN}Title: {self.title}\nAuthor: {self.author}\nEdition: {self.edition}\nPrice: Rs{self.price:.2f}{Style.RESET_ALL}"
 
-# Define the comics class
-class comics:
+# Define the Comics class
+class Comics:
     def __init__(self, title, author, price):
         self.title = title
         self.author = author
@@ -47,30 +47,51 @@ class comics:
     def display_info(self):
         return f"{Fore.MAGENTA}Title: {self.title}\nAuthor: {self.author}\nPrice: Rs{self.price:.2f}{Style.RESET_ALL}"
 
+# Define the Stationary class
+class Stationary:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    def display_info(self):
+        return f"{Fore.LIGHTGREEN_EX}Item: {self.name}\nPrice: Rs{self.price:.2f}{Style.RESET_ALL}"
+
 # Create instances of the Book class
 book1 = Book("To Kill a Mockingbird", "Harper Lee", 1960, 12000, 0.10)
 book2 = Book("1984                 ", "George Orwell", 1949, 2400, 0.10)
 book3 = Book("Mahabharatham        ", "Vinaponavan", 1667, 15000, 0.10)
 book4 = Book("Ramayanam            ", "Valmigi", 1899, 15670, 0.10)
 
-# Create instances of the studyBooks class
-codebook1 = studyBooks("Python for Beginners", "Guido Van Rossum", "6th edition", 1200)
-codebook2 = studyBooks("Java for Beginners  ", "J Balagurusamy", "7th edition", 780)
-codebook3 = studyBooks("C# for Advanced     ", "Anders Hejlsberg", "3rd edition", 890)
-codebook4 = studyBooks("C++ for Beginners   ", "Bjarne Stroustrup", "5th edition", 570)
+# Create instances of the StudyBooks class
+codebook1 = StudyBooks("Python for Beginners", "Guido Van Rossum", "6th edition", 1200)
+codebook2 = StudyBooks("Java for Beginners  ", "J Balagurusamy", "7th edition", 780)
+codebook3 = StudyBooks("C# for Advanced     ", "Anders Hejlsberg", "3rd edition", 890)
+codebook4 = StudyBooks("C++ for Beginners   ", "Bjarne Stroustrup", "5th edition", 570)
 
-# Create instances of the comics class 
-comicsbook1 = comics("Maus                   ", "Art Spiegelman", 460)
-comicsbook2 = comics("ALL Star Superman Vol2 ", "Grant Morrison", 570)
-comicsbook3 = comics("Anya's Ghost           ", "Vera Brosgol", 780)
-comicsbook4 = comics("Batman: The Dark Knight", "Frank Miller", 1000)
+# Create instances of the Comics class 
+comicsbook1 = Comics("Maus                   ", "Art Spiegelman", 460)
+comicsbook2 = Comics("ALL Star Superman Vol2 ", "Grant Morrison", 570)
+comicsbook3 = Comics("Anya's Ghost           ", "Vera Brosgol", 780)
+comicsbook4 = Comics("Batman: The Dark Knight", "Frank Miller", 1000)
 
-# List of books, codebooks, and comicsbook
+# Create instances of the Stationary class
+pencil = Stationary("Pencil", 5)
+pen = Stationary("Pen", 10)
+eraser = Stationary("Eraser", 5)
+long_notebook = Stationary("Long Notebook", 50)
+short_notebook = Stationary("Short Notebook", 30)
+Drawing_book   = Stationary("Drawing book 150GSM",450)
+Scale = Stationary("30cm Scale",10)
+colour_paper=Stationary("Pink colour",12)
+geomentry_Box=Stationary("Geomentry_Box",120)
+
+# List of books, codebooks, comicsbooks, and stationary 
 books = [book1, book2, book3, book4]
 codebooks = [codebook1, codebook2, codebook3, codebook4]
 comicsbooks = [comicsbook1, comicsbook2, comicsbook3, comicsbook4]
+stationary_items = [pencil, pen, eraser, long_notebook, short_notebook,Drawing_book,Scale,colour_paper]
 
-# Display information for all books
+# Display information for all books, codebooks, comicsbooks, and stationary items
 print(Fore.CYAN + "Books available:" + Style.RESET_ALL)
 for i, book in enumerate(books, start=1):
     print(f"\nBook {i}:")
@@ -86,13 +107,18 @@ for i, book in enumerate(comicsbooks, start=1):
     print(f"\nComic Book {i}:")
     print(book.display_info())
 
-# Generate the bill receipt for the selected books
-def generate_receipt(selected_books):
+print(Fore.CYAN + "\nStationary Items Available:" + Style.RESET_ALL)
+for i, item in enumerate(stationary_items, start=1):
+    print(f"\nStationary Item {i}:")
+    print(item.display_info())
+
+# Generate the bill receipt for the selected items
+def generate_receipt(selected_items):
     total_price = 0
     GST_RATE = 0.03
     bill_number = np.random.randint(100, 999)
 
-    receipt = Fore.YELLOW + "\t\tS. MAHESHWARI BOOKS\n"
+    receipt = Style.BRIGHT+Fore.YELLOW + "\t\tS. MAHESHWARI BOOKS\n"
     receipt += "\t====================================\n"
     receipt += Style.BRIGHT+"\t\t   BILL RECEIPT\n"
     receipt += "\t------------------------------------\n"
@@ -104,20 +130,26 @@ def generate_receipt(selected_books):
     receipt += Style.BRIGHT+Fore.YELLOW+"\tItem:\t\t\tPrice:\n"
     receipt += "\t------------------------------------\n"
     
-    for book in selected_books:
-        if isinstance(book, Book):
-            discounted_price = book.discounted_price()
+    for item in selected_items:
+        if isinstance(item, Book):
+            discounted_price = item.discounted_price()
             total_price += discounted_price
-            receipt +=Style.BRIGHT+Fore.YELLOW+f"\t{book.title[:15]} \tRs{discounted_price:.2f}\n"
-        else:
-            total_price += book.price
-            receipt +=Style.BRIGHT+Fore.YELLOW+f"\t{book.title[:15]} \tRs{book.price:.2f}\n"
+            receipt += Style.BRIGHT+Fore.YELLOW+f"\t{item.title[:15]} \tRs{discounted_price:.2f}\n"
+        elif isinstance(item, StudyBooks):
+            total_price += item.price
+            receipt += Style.BRIGHT+Fore.YELLOW+f"\t{item.title[:15]} \tRs{item.price:.2f}\n"
+        elif isinstance(item, Comics):
+            total_price += item.price
+            receipt += Style.BRIGHT+Fore.YELLOW+f"\t{item.title[:15]} \tRs{item.price:.2f}\n"
+        elif isinstance(item, Stationary):
+            total_price += item.price
+            receipt += Style.BRIGHT+Fore.YELLOW+f"\t{item.name[:15]} \tRs{item.price:.2f}\n"
     
     GST_amount = total_price * GST_RATE
     final_amount = total_price + GST_amount
     
     receipt += "\t------------------------------------\n"
-    receipt += f"\tNumber of Items: {len(selected_books)}\n"
+    receipt += f"\tNumber of Items: {len(selected_items)}\n"
     receipt += f"\tTotal Price:... - \tRs{total_price:.2f}\n"
     receipt += f"\tGST @ {GST_RATE*100}%: \t\tRs{GST_amount:.2f}\n"
     receipt += "\t------------------------------------\n"
@@ -130,7 +162,8 @@ def generate_receipt(selected_books):
     
     return receipt
 
-selected_books = []
+
+selected_items = []
 
 # Select a general book
 general_book_index = int(input("\nEnter the number of the general book you want to view: ")) - 1
@@ -142,14 +175,14 @@ if 0 <= general_book_index < len(books):
     buy_general = input("\nDo you want to buy this book? (yes/no): ").lower()
     
     if buy_general == 'yes':
-        selected_books.append(books[general_book_index])
+        selected_items.append(books[general_book_index])
         buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
         
         while buy_another == 'yes':
             # Select another book
             another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
             if 0 <= another_book_index < len(books) and another_book_index != general_book_index:
-                selected_books.append(books[another_book_index])
+                selected_items.append(books[another_book_index])
                 buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
             else:
                 print("Invalid book number or the same book selected again.")
@@ -169,14 +202,14 @@ if book_type == 'study':
         buy_study = input("\nDo you want to buy this book? (yes/no): ").lower()
         
         if buy_study == 'yes':
-            selected_books.append(codebooks[selected_book_index])
+            selected_items.append(codebooks[selected_book_index])
             buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
             
             while buy_another == 'yes':
                 # Select another book
                 another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
                 if 0 <= another_book_index < len(codebooks):
-                    selected_books.append(codebooks[another_book_index])
+                    selected_items.append(codebooks[another_book_index])
                     buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
                 else:
                     print("Invalid book number or the same book selected again.")
@@ -195,38 +228,64 @@ if book_type == 'comics':
         # Ask if the user wants to buy the selected book
         buy_comics = input("\nDo you want to buy this book? (yes/no): ").lower()
         if buy_comics == 'yes':
-            selected_books.append(comicsbooks[selected_book_index])
+            selected_items.append(comicsbooks[selected_book_index])
             buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
             
             while buy_another == 'yes':
                 # Select another book
                 another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
                 if 0 <= another_book_index < len(comicsbooks):
-                    selected_books.append(comicsbooks[another_book_index])
+                    selected_items.append(comicsbooks[another_book_index])
                     buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
                 else:
                     print("Invalid book number or the same book selected again.")
                     break
     else:
         print("Invalid book number.")
-else:
-    print("Invalid book type.")
 
-# Generate and print the receipt if any book is selected
-if selected_books:
-    receipt = generate_receipt(selected_books)
+# Select stationary items
+item_type = input("\nDo you want to view 'stationary' items? :").lower()
+if item_type == 'stationary':
+    selected_item_index = int(input("\nEnter the number of the stationary item you want to view: ")) - 1
+    if 0 <= selected_item_index < len(stationary_items):
+        print("\nSelected Stationary Item:")
+        print(stationary_items[selected_item_index].display_info())
+        
+        # Ask if the user wants to buy the selected item
+        buy_stationary = input("\nDo you want to buy this item? (yes/no): ").lower()
+        if buy_stationary == 'yes':
+            selected_items.append(stationary_items[selected_item_index])
+            buy_another = input("\nDo you want to buy another item? (yes/no): ").lower()
+            
+            while buy_another == 'yes':
+                # Select another item
+                another_item_index = int(input("\nEnter the number of the item you want to buy: ")) - 1
+                if 0 <= another_item_index < len(stationary_items):
+                    selected_items.append(stationary_items[another_item_index])
+                    buy_another = input("\nDo you want to buy another item? (yes/no): ").lower()
+                else:
+                    print("Invalid item number or the same item selected again.")
+                    break
+    else:
+        print("Invalid item number.")
+else:
+    print("Invalid item type.")
+
+# Generate and print the receipt if any item is selected
+if selected_items:
+    receipt = generate_receipt(selected_items)
     print(receipt)
 
-    cancel_book = input("\nDo you want to cancel any book? (yes/no): ").lower()
-    if cancel_book == 'yes':
-        cancel_index = int(input("Enter the number of the book you want to cancel: ")) - 1
-        if 0 <= cancel_index < len(selected_books):
-            selected_books.pop(cancel_index)
-            receipt = generate_receipt(selected_books)
+    cancel_item = input("\nDo you want to cancel any item? (yes/no): ").lower()
+    if cancel_item == 'yes':
+        cancel_index = int(input("Enter the number of the item you want to cancel: ")) - 1
+        if 0 <= cancel_index < len(selected_items):
+            selected_items.pop(cancel_index)
+            receipt = generate_receipt(selected_items)
             print(receipt)
         else:
-            print("Invalid book number.")
+            print("Invalid item number.")
     else:
         print("\nThank you for shopping....\n")
 else:
-    print("You chose not to buy any book.")
+    print("You chose not to buy any item.")
