@@ -1,6 +1,7 @@
 from datetime import datetime
 import random
 import numpy as np
+import inflect
 from colorama import Fore, Style, init
 
 # Initialize colorama
@@ -119,6 +120,7 @@ def generate_receipt(selected_items):
     bill_number = np.random.randint(100, 999)
 
     receipt = Style.BRIGHT+Fore.YELLOW + "\t\tS. MAHESHWARI BOOKS\n"
+    receipt += "\t192/A Northcar Street,Tenkasi-627811\n"
     receipt += "\t====================================\n"
     receipt += Style.BRIGHT+"\t\t   BILL RECEIPT\n"
     receipt += "\t------------------------------------\n"
@@ -155,8 +157,10 @@ def generate_receipt(selected_items):
     receipt += "\t------------------------------------\n"
     receipt += f"\tTotal Payment: \t\tRs{final_amount:.2f}\n"
     receipt += "\t====================================\n"
-    receipt += "\tAddress:\n"
-    receipt += "\t192/A Northcar Street,Tenkasi-627811\n"
+
+    #converting final amount to words
+    receipt += "\t"+inflect.engine().number_to_words(final_amount).upper()+"\n"
+    
     receipt += "\t====================================\n"
     receipt += "\t\tThank You for Shopping\n" + Style.RESET_ALL
     
