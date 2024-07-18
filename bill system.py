@@ -21,7 +21,7 @@ class Book:
         self.discount = discount
 
     def display_info(self):
-        return f"{Fore.RED}Title: {self.title}\nAuthor: {self.author}\nYear: {self.year}\nPrice: Rs{self.price:.2f}\nDiscount: {self.discount*100}%{Style.RESET_ALL}"
+        return f"{Fore.RED}Title: {self.title}\nAuthor: {self.author}\nYear: {self.year}\nPrice: Rs{self.price}\nDiscount: {self.discount*100}%{Style.RESET_ALL}"
             
     def discounted_price(self):
         discount_amount = self.price * self.discount
@@ -36,7 +36,7 @@ class StudyBooks:
         self.price = price
 
     def display_info(self):
-        return f"{Fore.GREEN}Title: {self.title}\nAuthor: {self.author}\nEdition: {self.edition}\nPrice: Rs{self.price:.2f}{Style.RESET_ALL}"
+        return f"{Fore.GREEN}Title: {self.title}\nAuthor: {self.author}\nEdition: {self.edition}\nPrice: Rs{self.price}{Style.RESET_ALL}"
 
 # Define the Comics class
 class Comics:
@@ -46,7 +46,7 @@ class Comics:
         self.price = price
 
     def display_info(self):
-        return f"{Fore.MAGENTA}Title: {self.title}\nAuthor: {self.author}\nPrice: Rs{self.price:.2f}{Style.RESET_ALL}"
+        return f"{Fore.MAGENTA}Title: {self.title}\nAuthor: {self.author}\nPrice: Rs{self.price}{Style.RESET_ALL}"
 
 # Define the Stationary class
 class Stationary:
@@ -55,7 +55,7 @@ class Stationary:
         self.price = price
 
     def display_info(self):
-        return f"{Fore.LIGHTGREEN_EX}Item: {self.name}\nPrice: Rs{self.price:.2f}{Style.RESET_ALL}"
+        return f"{Fore.LIGHTGREEN_EX}Item: {self.name}\nPrice: Rs{self.price}{Style.RESET_ALL}"
 
 # Create instances of the Book class
 book1 = Book("To Kill a Mockingbird", "Harper Lee", 1960, 12000, 0.10)
@@ -114,60 +114,61 @@ for i, item in enumerate(stationary_items, start=1):
     print(item.display_info())
 
 # Generate the bill receipt for the selected items
-def generate_receipt(selected_items):
+def generate_receipt(selected_items, bill_number=None):
     total_price = 0
     GST_RATE = 0.03
-    bill_number = np.random.randint(100, 999)
-
-    receipt = Style.BRIGHT+Fore.YELLOW + "\t\tS. MAHESHWARI BOOKS\n"
+    bill_number = bill_number or np.random.randint(100, 999)
+    
+    receipt = Style.BRIGHT + Fore.YELLOW + "\t\tS. MAHESHWARI BOOKS\n"
+    receipt += "\t     Whole Sale and Retail Sale\n"
     receipt += "\t192/A Northcar Street,Tenkasi-627811\n"
     receipt += "\t====================================\n"
-    receipt += Style.BRIGHT+"\t\t   BILL RECEIPT\n"
+    receipt += Style.BRIGHT + "\t\t   BILL RECEIPT\n"
     receipt += "\t------------------------------------\n"
-    receipt += Fore.YELLOW+Style.BRIGHT+f"\t\t\t\tBill No: {bill_number}\n"
+    receipt += Fore.YELLOW + Style.BRIGHT + f"\t\t\t\tBill No: {bill_number}\n"
     receipt += "\t------------------------------------\n"
     receipt += f"\tDate: {datetime.now().strftime('%Y-%m-%d')}\n"
     receipt += f"\tTime: {datetime.now().strftime('%H:%M:%S')}\n"
     receipt += "\t------------------------------------\n"
-    receipt += Style.BRIGHT+Fore.YELLOW+"\tItem:\t\t\tPrice:\n"
+    receipt += Style.BRIGHT + Fore.YELLOW + "\tItem:\t\t\tPrice:\n"
     receipt += "\t------------------------------------\n"
     
     for item in selected_items:
         if isinstance(item, Book):
             discounted_price = item.discounted_price()
             total_price += discounted_price
-            receipt += Style.BRIGHT+Fore.YELLOW+f"\t{item.title[:15]} \tRs{discounted_price:.2f}\n"
+            receipt += Style.BRIGHT + Fore.YELLOW + f"\t{item.title[:15]} \tRs{discounted_price}\n"
         elif isinstance(item, StudyBooks):
             total_price += item.price
-            receipt += Style.BRIGHT+Fore.YELLOW+f"\t{item.title[:15]} \tRs{item.price:.2f}\n"
+            receipt += Style.BRIGHT + Fore.YELLOW + f"\t{item.title[:15]} \tRs{item.price}\n"
         elif isinstance(item, Comics):
             total_price += item.price
-            receipt += Style.BRIGHT+Fore.YELLOW+f"\t{item.title[:15]} \tRs{item.price:.2f}\n"
+            receipt += Style.BRIGHT + Fore.YELLOW + f"\t{item.title[:15]} \tRs{item.price}\n"
         elif isinstance(item, Stationary):
             total_price += item.price
-            receipt += Style.BRIGHT+Fore.YELLOW+f"\t{item.name[:15]} \tRs{item.price:.2f}\n"
+            receipt += Style.BRIGHT + Fore.YELLOW + f"\t{item.name[:15]} \tRs{item.price}\n"
     
     GST_amount = total_price * GST_RATE
     final_amount = total_price + GST_amount
     
     receipt += "\t------------------------------------\n"
     receipt += f"\tNumber of Items: {len(selected_items)}\n"
-    receipt += f"\tTotal Price:... - \tRs{total_price:.2f}\n"
-    receipt += f"\tGST @ {GST_RATE*100}%: \t\tRs{GST_amount:.2f}\n"
+    receipt += f"\tTotal Price:... - \tRs{total_price}\n"
+    receipt += f"\tGST @ {GST_RATE*100}%: \t\tRs{GST_amount}\n"
     receipt += "\t------------------------------------\n"
-    receipt += f"\tTotal Payment: \t\tRs{final_amount:.2f}\n"
+    receipt += f"\tTotal Payment: \t\tRs{final_amount}\n"
     receipt += "\t====================================\n"
-
-    #converting final amount to words
-    receipt += "\t"+inflect.engine().number_to_words(final_amount).upper()+"\n"
+    
+    # Converting final amount to words
+    receipt += "\t" + inflect.engine().number_to_words(final_amount).upper() + "\n"
     
     receipt += "\t====================================\n"
     receipt += "\t\tThank You for Shopping\n" + Style.RESET_ALL
     
-    return receipt
-
+    return receipt, bill_number
 
 selected_items = []
+bills = {}
 
 # Select a general book
 general_book_index = int(input("\nEnter the number of the general book you want to view: ")) - 1
@@ -277,18 +278,79 @@ else:
 
 # Generate and print the receipt if any item is selected
 if selected_items:
-    receipt = generate_receipt(selected_items)
+    receipt, bill_number = generate_receipt(selected_items)
     print(receipt)
 
-    cancel_item = input("\nDo you want to cancel any item? (yes/no): ").lower()
-    if cancel_item == 'yes':
-        cancel_index = int(input("Enter the number of the item you want to cancel: ")) - 1
-        if 0 <= cancel_index < len(selected_items):
-            selected_items.pop(cancel_index)
-            receipt = generate_receipt(selected_items)
+    # Store the bill details
+    bills[bill_number] = selected_items.copy()
+
+    # Ask for return and exchange process
+    return_item = input("\nDo you want to return any items? (yes/no): ").lower()
+    if return_item == 'yes':
+        return_bill_number = int(input("Enter the bill number: "))
+        if return_bill_number in bills:
+            returned_items = bills.pop(return_bill_number)
+            print("\nReturned Items:")
+            for item in returned_items:
+                print(item.display_info())
+
+            # Allow the user to select new items for exchange
+            selected_items.clear()
+            selected_items.extend(returned_items)  # Add returned items back for exchange
+
+            buy_another = input("\nDo you want to buy more items? (yes/no): ").lower()
+            while buy_another == 'yes':
+                item_type = input("\nSelect type of item to view ('general', 'study', 'comics', 'stationary'): ").lower()
+                if item_type == 'general':
+                    book_index = int(input("\nEnter the number of the general book you want to view: ")) - 1
+                    if 0 <= book_index < len(books):
+                        print("\nSelected General Book:")
+                        print(books[book_index].display_info())
+                        buy_general = input("\nDo you want to buy this book? (yes/no): ").lower()
+                        if buy_general == 'yes':
+                            selected_items.append(books[book_index])
+                    else:
+                        print("Invalid book number.")
+                elif item_type == 'study':
+                    book_index = int(input("\nEnter the number of the study book you want to view: ")) - 1
+                    if 0 <= book_index < len(codebooks):
+                        print("\nSelected Study Book:")
+                        print(codebooks[book_index].display_info())
+                        buy_study = input("\nDo you want to buy this book? (yes/no): ").lower()
+                        if buy_study == 'yes':
+                            selected_items.append(codebooks[book_index])
+                    else:
+                        print("Invalid book number.")
+                elif item_type == 'comics':
+                    book_index = int(input("\nEnter the number of the comics book you want to view: ")) - 1
+                    if 0 <= book_index < len(comicsbooks):
+                        print("\nSelected Comics Book:")
+                        print(comicsbooks[book_index].display_info())
+                        buy_comics = input("\nDo you want to buy this book? (yes/no): ").lower()
+                        if buy_comics == 'yes':
+                            selected_items.append(comicsbooks[book_index])
+                    else:
+                        print("Invalid book number.")
+                elif item_type == 'stationary':
+                    item_index = int(input("\nEnter the number of the stationary item you want to view: ")) - 1
+                    if 0 <= item_index < len(stationary_items):
+                        print("\nSelected Stationary Item:")
+                        print(stationary_items[item_index].display_info())
+                        buy_stationary = input("\nDo you want to buy this item? (yes/no): ").lower()
+                        if buy_stationary == 'yes':
+                            selected_items.append(stationary_items[item_index])
+                    else:
+                        print("Invalid item number.")
+                else:
+                    print("Invalid item type.")
+                buy_another = input("\nDo you want to buy another item? (yes/no): ").lower()
+
+            # Generate and print the new receipt
+            receipt, new_bill_number = generate_receipt(selected_items)
             print(receipt)
+            bills[new_bill_number] = selected_items.copy()
         else:
-            print("Invalid item number.")
+            print("Invalid bill number.")
     else:
         print("\nThank you for shopping....\n")
 else:
