@@ -76,15 +76,15 @@ comicsbook3 = Comics("Anya's Ghost           ", "Vera Brosgol", 780)
 comicsbook4 = Comics("Batman: The Dark Knight", "Frank Miller", 1000)
 
 # Create instances of the Stationary class
-pencil = Stationary("Pencil", 5)
-pen = Stationary("Pen", 10)
-eraser = Stationary("Eraser", 5)
-long_notebook = Stationary("Long Notebook", 50)
-short_notebook = Stationary("Short Notebook", 30)
-Drawing_book   = Stationary("Drawing book 150GSM",450)
-Scale = Stationary("30cm Scale",10)
-colour_paper=Stationary("Pink colour",12)
-geomentry_Box=Stationary("Geomentry_Box",120)
+pencil = Stationary("Pencil                   ", 5)
+pen = Stationary("Pen                   ", 10)
+eraser = Stationary("Eraser                   ", 5)
+long_notebook = Stationary("Long Notebook                   ", 50)
+short_notebook = Stationary("Short Notebook                   ", 30)
+Drawing_book   = Stationary("Drawing book 150GSM                   ",450)
+Scale = Stationary("30cm Scale                   ",10)
+colour_paper=Stationary("Pink colour                   ",12)
+geomentry_Box=Stationary("Geomentry_Box                   ",120)
 
 # List of books, codebooks, comicsbooks, and stationary 
 books = [book1, book2, book3, book4]
@@ -188,6 +188,7 @@ if 0 <= general_book_index < len(books):
             another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
             if 0 <= another_book_index < len(books) and another_book_index != general_book_index:
                 selected_items.append(books[another_book_index])
+                print(books[another_book_index].display_info())
                 buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
             else:
                 print("Invalid book number or the same book selected again.")
@@ -215,6 +216,7 @@ if book_type == 'study':
                 another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
                 if 0 <= another_book_index < len(codebooks):
                     selected_items.append(codebooks[another_book_index])
+                    print(codebooks[another_book_index].display_info())
                     buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
                 else:
                     print("Invalid book number or the same book selected again.")
@@ -240,7 +242,8 @@ if book_type == 'comics':
                 # Select another book
                 another_book_index = int(input("\nEnter the number of the book you want to buy: ")) - 1
                 if 0 <= another_book_index < len(comicsbooks):
-                    selected_items.append(comicsbooks[another_book_index])
+                    selected_items.append(comicsbooks[another_book_index].display_info())
+                    print(comicsbooks[another_book_index].display_info())
                     buy_another = input("\nDo you want to buy another book? (yes/no): ").lower()
                 else:
                     print("Invalid book number or the same book selected again.")
@@ -267,6 +270,7 @@ if item_type == 'stationary':
                 another_item_index = int(input("\nEnter the number of the item you want to buy: ")) - 1
                 if 0 <= another_item_index < len(stationary_items):
                     selected_items.append(stationary_items[another_item_index])
+                    print(stationary_items[another_item_index].display_info())
                     buy_another = input("\nDo you want to buy another item? (yes/no): ").lower()
                 else:
                     print("Invalid item number or the same item selected again.")
@@ -285,8 +289,8 @@ if selected_items:
     bills[bill_number] = selected_items.copy()
 
     # Ask for return and exchange process
-    return_item = input("\nDo you want to return any items? (yes/no): ").lower()
-    if return_item == 'yes':
+    cancel_item= input("\nDo you want to cancel any items? (yes/no): ").lower()
+    if cancel_item == 'yes':
         return_bill_number = int(input("Enter the bill number: "))
         if return_bill_number in bills:
             returned_items = bills.pop(return_bill_number)
@@ -294,57 +298,11 @@ if selected_items:
             for item in returned_items:
                 print(item.display_info())
 
-            # Allow the user to select new items for exchange
-            selected_items.clear()
-            selected_items.extend(returned_items)  # Add returned items back for exchange
-
-            buy_another = input("\nDo you want to buy more items? (yes/no): ").lower()
-            while buy_another == 'yes':
-                item_type = input("\nSelect type of item to view ('general', 'study', 'comics', 'stationary'): ").lower()
-                if item_type == 'general':
-                    book_index = int(input("\nEnter the number of the general book you want to view: ")) - 1
-                    if 0 <= book_index < len(books):
-                        print("\nSelected General Book:")
-                        print(books[book_index].display_info())
-                        buy_general = input("\nDo you want to buy this book? (yes/no): ").lower()
-                        if buy_general == 'yes':
-                            selected_items.append(books[book_index])
-                    else:
-                        print("Invalid book number.")
-                elif item_type == 'study':
-                    book_index = int(input("\nEnter the number of the study book you want to view: ")) - 1
-                    if 0 <= book_index < len(codebooks):
-                        print("\nSelected Study Book:")
-                        print(codebooks[book_index].display_info())
-                        buy_study = input("\nDo you want to buy this book? (yes/no): ").lower()
-                        if buy_study == 'yes':
-                            selected_items.append(codebooks[book_index])
-                    else:
-                        print("Invalid book number.")
-                elif item_type == 'comics':
-                    book_index = int(input("\nEnter the number of the comics book you want to view: ")) - 1
-                    if 0 <= book_index < len(comicsbooks):
-                        print("\nSelected Comics Book:")
-                        print(comicsbooks[book_index].display_info())
-                        buy_comics = input("\nDo you want to buy this book? (yes/no): ").lower()
-                        if buy_comics == 'yes':
-                            selected_items.append(comicsbooks[book_index])
-                    else:
-                        print("Invalid book number.")
-                elif item_type == 'stationary':
-                    item_index = int(input("\nEnter the number of the stationary item you want to view: ")) - 1
-                    if 0 <= item_index < len(stationary_items):
-                        print("\nSelected Stationary Item:")
-                        print(stationary_items[item_index].display_info())
-                        buy_stationary = input("\nDo you want to buy this item? (yes/no): ").lower()
-                        if buy_stationary == 'yes':
-                            selected_items.append(stationary_items[item_index])
-                    else:
-                        print("Invalid item number.")
-                else:
-                    print("Invalid item type.")
-                buy_another = input("\nDo you want to buy another item? (yes/no): ").lower()
-
+    if cancel_item == 'yes':
+        cancel_index = int(input("Enter the number of the book you want to cancel: ")) - 1
+        if 0 <= cancel_index < len(selected_items):
+            selected_items.pop(cancel_index)
+            
             # Generate and print the new receipt
             receipt, new_bill_number = generate_receipt(selected_items)
             print(receipt)
